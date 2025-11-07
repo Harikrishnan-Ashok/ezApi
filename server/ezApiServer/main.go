@@ -12,7 +12,8 @@ func main() {
 	router := gin.Default()
 	database.Connect()
 
-	router.GET("/endpoint", controllers.GetEndpointDetails())
+	router.GET("/endpoint/:endpointID", controllers.GetEndpointDetails())
+
 	if err := router.Run(":1234"); err != nil {
 		fmt.Println("Cant run server", err)
 	}
