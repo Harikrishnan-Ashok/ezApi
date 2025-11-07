@@ -13,6 +13,7 @@ func main() {
 	database.Connect()
 
 	router.GET("/endpoint/:endpointID", controllers.GetEndpointDetails())
+	router.POST("/endpoint", controllers.PostEndpointDetails())
 
 	if err := router.Run(":1234"); err != nil {
 		fmt.Println("Cant run server", err)

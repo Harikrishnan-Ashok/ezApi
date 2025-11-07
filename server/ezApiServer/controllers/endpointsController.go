@@ -3,6 +3,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -33,10 +34,39 @@ func GetEndpointDetails() gin.HandlerFunc {
 		err := collection.FindOne(ctx, bson.M{"endpointID": endpointID}).Decode(&endpointDetails)
 
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to retrive data from db"})
+			c.JSON(http.StatusNotFound, gin.H{"error": "failed to retrive data from db"})
 		}
 
 		c.JSON(http.StatusOK, endpointDetails)
 
+	}
+}
+
+func PostEndpointDetails() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		//creating context with timeout
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
+		//variable to store the details
+		var endpointDetails models.EndpointDetails
+
+		if err := c.BindJSON(&endpointDetails); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body"})
+		}
+
+		collection := database.DB.Collection("endpoints")
+		endpointDetails.CreatedAt = time.Now()
+		endpointDetails.UpdatedAt = time.Now()
+
+		res, err := collection.InsertOne(ctx, endpointDetails)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		fmt.Println(endpointDetails)
+		c.JSON(http.StatusCreated, res)
 	}
 }
