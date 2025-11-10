@@ -10,6 +10,7 @@ import (
 	"github.com/Harikrishnan-Ashok/ezApi/server/ezApiServer/database"
 	"github.com/Harikrishnan-Ashok/ezApi/server/ezApiServer/models"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -57,6 +58,7 @@ func PostEndpointDetails() gin.HandlerFunc {
 		}
 
 		collection := database.DB.Collection("endpoints")
+		endpointDetails.EndpointID = uuid.NewString()
 		endpointDetails.CreatedAt = time.Now()
 		endpointDetails.UpdatedAt = time.Now()
 
