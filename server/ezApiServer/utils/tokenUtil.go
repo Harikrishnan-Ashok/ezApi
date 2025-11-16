@@ -3,14 +3,13 @@ package utils
 
 import (
 	"context"
-	"fmt"
-	"log"
-	"os"
+	"errors"
 	"time"
 
+	"github.com/Harikrishnan-Ashok/ezApi/server/ezApiServer/config"
 	"github.com/Harikrishnan-Ashok/ezApi/server/ezApiServer/database"
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -25,16 +24,6 @@ type SignedDetails struct {
 
 // GenerateAllTokens creates and signs access + refresh tokens
 func GenerateAllTokens(userID, name, email, role string) (string, string, error) {
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using environment variables")
-	}
-
-	secretKey := os.Getenv("SECRET_KEY")
-	secretRefreshKey := os.Getenv("SECRET_REF_KEY")
-
-	if secretKey == "" || secretRefreshKey == "" {
-		return "", "", fmt.Errorf("missing JWT secret keys")
-	}
 
 	// Access token
 	claims := &SignedDetails{
@@ -49,7 +38,7 @@ func GenerateAllTokens(userID, name, email, role string) (string, string, error)
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte(secretKey))
+	signedToken, err := token.SignedString([]byte(config.SecretKey))
 	if err != nil {
 		return "", "", err
 	}
@@ -59,7 +48,7 @@ func GenerateAllTokens(userID, name, email, role string) (string, string, error)
 	refreshClaims.ExpiresAt = jwt.NewNumericDate(time.Now().Add(7 * 24 * time.Hour))
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, &refreshClaims)
-	signedRefreshToken, err := refreshToken.SignedString([]byte(secretRefreshKey))
+	signedRefreshToken, err := refreshToken.SignedString([]byte(config.SecretRefreshKey))
 	if err != nil {
 		return "", "", err
 	}
@@ -85,4 +74,41 @@ func UpdateAllToken(userID, token, refreshToken string) error {
 
 	_, err := collection.UpdateOne(ctx, bson.M{"userID": userID}, updateData)
 	return err
+}
+
+// GetToken : func to get the auth header and extract token
+func GetToken(c *gin.Context) (string, error) {
+	authHeader := c.Request.Header.Get("Authorization")
+	if authHeader == "" {
+		return "", errors.New("authorization is not found in Headers ")
+	}
+	tokenString := authHeader[len("Bearer "):]
+	if tokenString == "" {
+		return "", errors.New("token is required")
+	}
+	return tokenString, nil
+}
+
+// ValidateToken to validate the token extracted
+func ValidateToken(tokenString string) (*SignedDetails, error) {
+	claims := &SignedDetails{}
+
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (any, error) {
+		return []byte(config.SecretKey), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	// Correct way to ensure token was signed using HMAC
+	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+		return nil, errors.New("invalid signing method")
+	}
+
+	// Check expiry
+	if claims.ExpiresAt.Time.Before(time.Now()) {
+		return nil, errors.New("token has expired")
+	}
+
+	return claims, nil
 }

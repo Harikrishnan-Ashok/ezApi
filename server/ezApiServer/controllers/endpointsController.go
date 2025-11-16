@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetEndpointDetails() gin.HandlerFunc {
@@ -21,9 +22,14 @@ func GetEndpointDetails() gin.HandlerFunc {
 		defer cancel()
 
 		//getting and validating endpointID from params
-		endpointID := c.Param("endpointID")
-		if endpointID == "" {
+		idParam := c.Param("endpointID")
+		if idParam == "" {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "endpointID is required"})
+			return
+		}
+		objID, err := primitive.ObjectIDFromHex(idParam)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "cannot convert idParam to Hex"})
 			return
 		}
 
@@ -32,10 +38,12 @@ func GetEndpointDetails() gin.HandlerFunc {
 
 		var endpointDetails models.EndpointDetails
 		//using content and collection to find and retrive data from db collection and store in &variable from model
-		err := collection.FindOne(ctx, bson.M{"endpointID": endpointID}).Decode(&endpointDetails)
+		err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&endpointDetails)
 
 		if err != nil {
+			fmt.Println(err)
 			c.JSON(http.StatusNotFound, gin.H{"error": "failed to retrive data from db"})
+			return
 		}
 
 		c.JSON(http.StatusOK, endpointDetails)
