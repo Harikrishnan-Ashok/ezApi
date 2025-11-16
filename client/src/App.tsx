@@ -1,16 +1,26 @@
 import {Stack} from "@mui/material";
-import LandingPage from "./pages/LandingPage";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import LandingPage from "./pages/landingPage/landingPage";
 
 function App() {
 	return (
-		<Stack
-			justifyContent="center"
-			alignItems="center"
-			width="100vw"
-			height="100vh"
-		>
-			<LandingPage />
-		</Stack>
+		<BrowserRouter>
+			<Routes>
+				<Route
+					path="/"
+					element={
+						<Stack
+							justifyContent="center"
+							alignItems="center"
+							width="100vw"
+							height="100vh"
+						>
+							<LandingPage />
+						</Stack>
+					}>
+				</Route>
+			</Routes>
+		</BrowserRouter>
 	)
 }
 
