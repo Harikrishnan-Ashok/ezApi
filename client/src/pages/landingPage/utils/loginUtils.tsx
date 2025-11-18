@@ -2,7 +2,7 @@ import {NavigateFunction} from "react-router-dom"
 
 export const handleGuestLogin = (navigate: NavigateFunction) => {
 	console.log("navigating to guestLogin")
-	navigate("/guest")
+	navigate("/home/guest/all_endpoints")
 }
 
 export const handleUserLogin = (navigate: NavigateFunction) => {

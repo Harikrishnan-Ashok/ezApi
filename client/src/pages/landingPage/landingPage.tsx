@@ -10,20 +10,20 @@ export default function LandingPage() {
 
 	return (
 		<>
-			<Paper sx={{minWidth: "50%"}}>
-				<Stack margin={5} justifyContent={"center"} alignItems={"center"}>
+			<Paper sx={{p: 5, minWidth: "50%"}}>
+				<Stack>
 					<Stack alignItems={"center"} >
 						<Typography variant="h2">
-							EzApi
+							Ezapi
 						</Typography>
 						<Typography variant="subtitle1">
 							A handy tool to make your chores a bit eaiser
 						</Typography>
 					</Stack>
-					<Stack mt={3} gap={2} >
+					<Stack justifyContent={"center"} alignItems={"center"} mt={3} gap={2} >
 						<Button onClick={() => handleGuestLogin(navigate)} color="primary" variant="contained"> Login as a Guest </Button>
 						{showForm ?
-							<Stack gap={2} direction={"row"}>
+							<Stack justifyContent={"center"} alignItems={"center"} gap={2} direction={"row"}>
 								<Button onClick={() => handleUserLogin(navigate)} color="primary" variant="contained">Been here before</Button>
 								<Button onClick={() => handleUserSignUp(navigate)} color="primary" variant="contained">Sign me up buddy</Button>
 							</Stack> :
@@ -31,7 +31,7 @@ export default function LandingPage() {
 						}
 					</Stack>
 				</Stack>
-			</Paper>
+			</Paper >
 		</>
 	)
 }
