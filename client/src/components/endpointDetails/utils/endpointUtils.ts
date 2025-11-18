@@ -1,10 +1,4 @@
-export interface EndpointDetailsType {
-	method: string;
-	path: string;
-	enableDelay: boolean;
-	delayTimeout: number;
-	output: Record<string, any>;
-}
+import {EndpointDetailsType} from "../types";
 
 export const defaultEndpointDetails: EndpointDetailsType = {
 	method: "GET",

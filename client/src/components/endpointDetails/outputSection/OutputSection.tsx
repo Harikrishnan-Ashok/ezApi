@@ -8,7 +8,7 @@ type props = {
 export default function OutputSection({endpointDetails, setEndpointDetails}: props) {
 	return (
 		<Stack mt={2}>
-			<TextField sx={{flexGrow: 1}} minRows={27} multiline fullWidth ></TextField>
+			<TextField sx={{flexGrow: 1}} minRows={29} multiline fullWidth ></TextField>
 		</Stack>
 	)
 }

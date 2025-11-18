@@ -3,7 +3,7 @@ import {createTheme} from "@mui/material";
 export const basetheme = createTheme({
 	typography: {
 		fontFamily: "Goldman",
-		fontSize: 15
+		fontSize: 14
 	},
 	components: {
 		MuiAppBar: {

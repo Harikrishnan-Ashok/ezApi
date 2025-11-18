@@ -7,8 +7,8 @@ import {defaultEndpointDetails, EndpointDetailsType} from "./utils/endpointUtils
 
 export default function EndpointDetails() {
 	const [endpointDetails, setEndpointDetails] = useState<EndpointDetailsType>(defaultEndpointDetails)
-	return (<>
-		<Stack direction={"row"} gap={1} p={1} >
+	return (
+		<Stack flexGrow={1} direction={"row"} gap={1} p={1} >
 			<Stack flex={1}>
 				<Paper sx={{p: 1, height: "100%", width: "100%"}}>
 					<Typography variant="h5" >Output</Typography>
@@ -30,5 +30,5 @@ export default function EndpointDetails() {
 				</Paper>
 			</Stack>
 		</Stack >
-	</>)
+	)
 }

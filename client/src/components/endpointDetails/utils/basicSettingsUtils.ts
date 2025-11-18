@@ -1,3 +1,5 @@
+import {EndpointDetailsSetterType} from "../types";
+
 export const delayHint = "Adding a delay with a reasonable timeout helps mimic the loading phase you’d see in a normal API call"
 export const methods = ["GET", "POST", "DELETE", "PUT"]
 export const httpStatus = [
@@ -14,3 +16,25 @@ export const httpStatus = [
 	{label: "502: Bad Gateway", value: 502},
 	{label: "503: Service Unavailable", value: 503}
 ];
+
+export const handleMethodChange = (val: string, setVal: EndpointDetailsSetterType) => {
+	setVal(prev => ({...prev, method: val}));
+	console.log("changin the method")
+}
+
+export const handlePathChange = (val: string, setVal: EndpointDetailsSetterType) => {
+	setVal(prev => ({...prev, path: val}));
+	console.log("changin the path")
+}
+
+export const handleEnableDelay = (checked: boolean, setVal: EndpointDetailsSetterType) => {
+	setVal(prev => ({...prev, enableDelay: checked}));
+	console.log(checked ? "Enabling Delay" : "Disabling Delay");
+};
+
+export const handleDelayTimeoutChange = (timeout: number, delayNeeded: boolean, setVal: EndpointDetailsSetterType) => {
+	if (delayNeeded === true) {
+		setVal(prev => ({...prev, delayTimeout: timeout}));
+		console.log("Delay timeout ", timeout);
+	}
+};
