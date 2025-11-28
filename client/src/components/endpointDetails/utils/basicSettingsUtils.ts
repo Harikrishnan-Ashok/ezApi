@@ -38,3 +38,14 @@ export const handleDelayTimeoutChange = (timeout: number, delayNeeded: boolean, 
 		console.log("Delay timeout ", timeout);
 	}
 };
+
+export const handleStatusChange = (
+  event: React.SyntheticEvent<Element, Event>,
+  newValue: { label: string; value: number } | null,
+  setVal: EndpointDetailsSetterType
+) => {
+  if (newValue) {
+    setVal(prev => ({ ...prev, statusCode: newValue.value }));
+    console.log("Changing status to:", newValue.value);
+  }
+};

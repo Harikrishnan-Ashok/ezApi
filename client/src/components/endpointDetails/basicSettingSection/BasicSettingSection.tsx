@@ -1,20 +1,20 @@
-import {Autocomplete, IconButton, InputAdornment, Stack, Switch, TextField, Tooltip, Typography} from "@mui/material";
+import { Autocomplete, IconButton, InputAdornment, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import {delayHint, handleDelayTimeoutChange, handleEnableDelay, handleMethodChange, handlePathChange, httpStatus, methods} from "../utils/basicSettingsUtils";
-import {EndpointDetailsType, EndpointDetailsSetterType} from "../types";
+import { delayHint, handleDelayTimeoutChange, handleEnableDelay, handleStatusChange, handleMethodChange, handlePathChange, httpStatus, methods } from "../utils/basicSettingsUtils";
+import { EndpointDetailsType, EndpointDetailsSetterType } from "../types";
 
 type props = {
 	endpointDetails: EndpointDetailsType,
 	setEndpointDetails: EndpointDetailsSetterType
 }
 
-export default function BasicSettingSection({endpointDetails, setEndpointDetails}: props) {
+export default function BasicSettingSection({ endpointDetails, setEndpointDetails }: props) {
 
 	return (
 		<>
 			<Stack gap={1} mt={2} alignItems={"start"} direction={"row"} >
 				<Autocomplete
-					disablePortal options={methods} sx={{width: 300}} value={endpointDetails.method}
+					disablePortal options={methods} sx={{ width: 300 }} value={endpointDetails.method}
 					onChange={(_, value) => handleMethodChange(value ?? "", setEndpointDetails)}
 					renderInput={(params) => <TextField {...params} label="Method" />}
 				/>
@@ -31,16 +31,16 @@ export default function BasicSettingSection({endpointDetails, setEndpointDetails
 					<TextField
 						type="number"
 						value={endpointDetails.delayTimeout} onChange={(e) => handleDelayTimeoutChange(Number(e.target.value), endpointDetails.enableDelay, setEndpointDetails)}
-						variant="standard" size="small" sx={{width: "25%"}}
+						variant="standard" size="small" sx={{ width: "25%" }}
 						slotProps={{
 							input: {
 								endAdornment: (
-									<InputAdornment position="end" sx={{color: "inherit"}}>
-										<Typography sx={{fontSize: 'inherit', lineHeight: 'inherit'}}>ms</Typography>
+									<InputAdornment position="end" sx={{ color: "inherit" }}>
+										<Typography sx={{ fontSize: 'inherit', lineHeight: 'inherit' }}>ms</Typography>
 									</InputAdornment>
 								),
 								inputProps: {
-									style: {textAlign: "right"}
+									style: { textAlign: "right" }
 								}
 							}
 						}}
@@ -57,10 +57,9 @@ export default function BasicSettingSection({endpointDetails, setEndpointDetails
 					disablePortal
 					options={httpStatus}
 					getOptionLabel={(option) => option.label}
-					sx={{width: 400}}
-					onChange={(_, val) => {
-						console.log(val?.value);
-					}}
+					value={httpStatus.find(status => status.value === endpointDetails.statusCode) || null}
+					onChange={(event, newValue) => handleStatusChange(event, newValue, setEndpointDetails)}
+					sx={{ width: 400 }}
 					renderInput={(params) => <TextField {...params} label="Http Status" />}
 				/>
 			</Stack>

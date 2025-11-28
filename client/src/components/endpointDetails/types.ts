@@ -5,6 +5,7 @@ export interface EndpointDetailsType {
 	path: string;
 	enableDelay: boolean;
 	delayTimeout: number;
+	statusCode:number;
 	output: Record<string, any>;
 }
 
