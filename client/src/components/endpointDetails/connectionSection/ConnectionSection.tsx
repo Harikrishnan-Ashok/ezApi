@@ -3,15 +3,15 @@ import { EndpointDetailsType } from "../types";
 
 type props = {
 	endpointDetails: EndpointDetailsType
-	setEndpointDetails: React.Dispatch<React.SetStateAction<EndpointDetailsType>>
+	saveDetails: (newDeats: EndpointDetailsType) => void
 }
 
-export default function ConnectionSection({ endpointDetails, setEndpointDetails }: props) {
+export default function ConnectionSection({ endpointDetails, saveDetails }: props) {
 	return (
 		<Stack
 			direction="row" gap={1} sx={{ marginTop: "auto", alignSelf: "flex-end" }}>
 			<Button variant="contained" color="error">Remove This Endpoint</Button>
-			<Button variant="contained" color="primary" onClick={() => console.log(endpointDetails)} >Save</Button>
+			<Button variant="contained" color="primary" onClick={() => saveDetails(endpointDetails)} >Save</Button>
 		</Stack >
 
 	)

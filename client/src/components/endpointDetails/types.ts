@@ -1,12 +1,9 @@
-import React from "react";
-
-export interface EndpointDetailsType {
+export type EndpointDetailsType = {
 	method: string;
 	path: string;
 	enableDelay: boolean;
 	delayTimeout: number;
-	statusCode:number;
+	statusCode: number;
 	output: Record<string, any>;
 }
 
-export type EndpointDetailsSetterType = React.Dispatch<React.SetStateAction<EndpointDetailsType>>;

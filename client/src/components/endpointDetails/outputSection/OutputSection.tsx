@@ -1,12 +1,12 @@
 import { Stack, TextField } from "@mui/material";
 import { EndpointDetailsType } from "../types";
 
-
-type props = {
-	endpointDetails: EndpointDetailsType,
-	setEndpointDetails: React.Dispatch<React.SetStateAction<EndpointDetailsType>>
+//defining props type
+type outputSectionProps = {
+	endpointDetails: EndpointDetailsType
 }
-export default function OutputSection({ endpointDetails, setEndpointDetails }: props) {
+
+export default function OutputSection({ endpointDetails }: outputSectionProps) {
 	return (
 		<Stack mt={2}>
 			<TextField value={JSON.stringify(endpointDetails.output)} sx={{ flexGrow: 1 }} minRows={29} multiline fullWidth ></TextField>
