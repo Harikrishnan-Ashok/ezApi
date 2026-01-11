@@ -7,3 +7,14 @@ export type EndpointDetailsType = {
 	output: Record<string, any>;
 }
 
+
+
+//default values
+export const defaultEndpointDetails: EndpointDetailsType = {
+	method: "GET",
+	path: "/",
+	enableDelay: false,
+	delayTimeout: 0,
+	statusCode: 200,
+	output: {}
+}

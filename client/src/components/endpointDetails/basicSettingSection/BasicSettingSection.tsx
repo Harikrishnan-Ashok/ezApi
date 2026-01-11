@@ -1,38 +1,36 @@
 import { Autocomplete, IconButton, InputAdornment, Stack, Switch, TextField, Tooltip, Typography } from "@mui/material";
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { delayHint, handleDelayTimeoutChange, handleEnableDelay, handleStatusChange, handleMethodChange, handlePathChange, httpStatus, methods } from "../utils/basicSettingsUtils";
+import { delayHint, httpStatus, methods } from "../utils/basicSettingsUtils";
 import { EndpointDetailsType } from "../types";
 
-type basicSectionProps = {
-	endpointDetails: EndpointDetailsType,
-}
+type basicSectionProps = Pick<EndpointDetailsType, | "method" | "path" | "enableDelay" | "delayTimeout" | "statusCode">
 
-export default function BasicSettingSection({ endpointDetails }: basicSectionProps) {
+export default function BasicSettingSection({ method, path, enableDelay, delayTimeout, statusCode }: basicSectionProps) {
 
 	return (
 		<>
 			<Stack gap={1} mt={2} alignItems={"start"} direction={"row"} >
 				<Autocomplete
-					disablePortal options={methods} sx={{ width: 300 }} value={endpointDetails.method}
+					disablePortal options={methods} sx={{ width: 300 }} value={method}
 					onChange={() => alert("tried to change method autocomplete")}
 					renderInput={(params) => <TextField {...params} label="Method" />}
 				/>
 				<TextField
-					value={endpointDetails.path}
+					value={path}
 					onChange={() => alert("trying to change the path")}
 					label="path:" placeholder={`enter absolute path here. (ie.  starting with /)`} fullWidth={true}>
 				</TextField>
 			</Stack>
 			<Stack gap={2} justifyContent={"start"} mt={2} direction={"row"} alignItems={"center"} >
 				<Typography variant="subtitle1" > Add a delay :</Typography>
-				<Switch value={endpointDetails.enableDelay}
+				<Switch value={enableDelay}
 					onChange={() => alert("trying to change the de;ay")}
 					color="info" >
 				</Switch>
-				{endpointDetails.enableDelay &&
+				{enableDelay &&
 					<TextField
 						type="number"
-						value={endpointDetails.delayTimeout}
+						value={delayTimeout}
 						onChange={() => alert("trying to change the de;ay")}
 						variant="standard" size="small" sx={{ width: "25%" }}
 						slotProps={{
@@ -60,7 +58,7 @@ export default function BasicSettingSection({ endpointDetails }: basicSectionPro
 					disablePortal
 					options={httpStatus}
 					getOptionLabel={(option) => option.label}
-					value={httpStatus.find(status => status.value === endpointDetails.statusCode) || null}
+					value={httpStatus.find(status => status.value === statusCode) || null}
 					onChange={() => alert("trying to change the de;ay")}
 					sx={{ width: 400 }}
 					renderInput={(params) => <TextField {...params} label="Http Status" />}
