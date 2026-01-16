@@ -1,12 +1,31 @@
-import { Stack, TextField } from "@mui/material";
-import { EndpointDetailsType } from "../types";
+import { Stack, TextField } from "@mui/material"
+import { EndpointDetailsType } from "../types"
 
-type props = Pick<EndpointDetailsType, | "output">
+type Props = {
+	output: EndpointDetailsType["output"]
+	send: (event: {
+		type: "UPDATE_FIELD"
+		key: "output"
+		value: string
+	}) => void
+}
 
-export default function OutputSection({ output }: props) {
+export default function OutputSection({ output, send }: Props) {
 	return (
 		<Stack mt={2}>
-			<TextField value={JSON.stringify(output)} sx={{ flexGrow: 1 }} minRows={29} multiline fullWidth ></TextField>
+			<TextField
+				multiline
+				fullWidth
+				minRows={29}
+				value={output}
+				onChange={(e) =>
+					send({
+						type: "UPDATE_FIELD",
+						key: "output",
+						value: e.target.value,
+					})
+				}
+			/>
 		</Stack>
 	)
 }

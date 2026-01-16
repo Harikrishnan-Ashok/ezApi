@@ -4,7 +4,7 @@ export type EndpointDetailsType = {
 	enableDelay: boolean;
 	delayTimeout: number;
 	statusCode: number;
-	output: Record<string, any>;
+	output: string;
 }
 
 
@@ -16,5 +16,5 @@ export const defaultEndpointDetails: EndpointDetailsType = {
 	enableDelay: false,
 	delayTimeout: 0,
 	statusCode: 200,
-	output: {}
+	output: "{}"
 }

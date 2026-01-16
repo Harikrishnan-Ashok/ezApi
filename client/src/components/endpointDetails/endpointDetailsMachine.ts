@@ -1,4 +1,4 @@
-import { createMachine } from 'xstate';
+import { assign, createMachine } from 'xstate';
 import { defaultEndpointDetails } from './types';
 
 export const endpointDetailsMachine = createMachine({
@@ -6,6 +6,7 @@ export const endpointDetailsMachine = createMachine({
 	initial: 'IDLE',
 	context: {
 		data: defaultEndpointDetails,
+		message: "",
 	},
 	states: {
 		IDLE: {
@@ -15,6 +16,9 @@ export const endpointDetailsMachine = createMachine({
 			on: {
 				PRIMARY: {
 					actions: () => { console.log("trying to save") }
+				},
+				UPDATE_FIELD: {
+					actions: "updateFieldAction"
 				},
 				CANCEL: "IDLE"
 			}
@@ -29,4 +33,14 @@ export const endpointDetailsMachine = createMachine({
 		INVOKE_SAVE: {},
 
 	}
-});
+}, {
+	actions: {
+		updateFieldAction: assign({
+			data: (ctx) => {
+				console.log(ctx.event)
+				return { ...ctx.context.data, [ctx.event.key]: ctx.event.value }
+			}
+		})
+	}
+}
+);

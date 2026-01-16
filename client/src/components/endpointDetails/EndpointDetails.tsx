@@ -13,7 +13,7 @@ export default function EndpointDetails() {
 			<Stack flex={1}>
 				<Paper sx={{ p: 1, height: "100%", width: "100%" }}>
 					<Typography variant="h5" >Output</Typography>
-					<OutputSection output={state.context.data.output}></OutputSection>
+					<OutputSection send={send} output={state.context.data.output}></OutputSection>
 				</Paper>
 			</Stack>
 			<Stack flex={1} gap={1}>
@@ -25,6 +25,7 @@ export default function EndpointDetails() {
 							path={state.context.data.path}
 							delayTimeout={state.context.data.delayTimeout}
 							enableDelay={state.context.data.enableDelay}
+							send={send}
 							statusCode={state.context.data.statusCode} >
 						</BasicSettingSection>
 					</Stack>
